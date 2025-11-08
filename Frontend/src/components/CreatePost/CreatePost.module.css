@@ -1,0 +1,122 @@
+.container {
+  width: 100%;
+  margin-top: 80px;
+  max-width: 480px;
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-inline: auto;
+  transition: all 0.3s ease;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #111827;
+}
+
+.textarea {
+  width: 100%;
+  border: none;
+  resize: none;
+  outline: none;
+  font-size: 0.95rem;
+  color: #374151;
+  min-height: 60px;
+  background-color: transparent;
+}
+
+.textarea::placeholder {
+  color: #9ca3af;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.photoButton {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #2563eb; 
+  font-weight: 500;
+  background: none;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 5px;
+  border-radius:6px;
+  transition: 0.2s ease-in;
+}
+
+.photoButton:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+.photoButton:disabled {
+  cursor: not-allowed;
+  color: #5f8ef4
+}
+.photoButton:disabled:hover {
+ background: none;
+}
+
+.postButton {
+  background: #6366f1; /* indigo-500 */
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.postButton:hover {
+  opacity: 0.9;
+}
+
+.disabled {
+  background: #d1d5db; /* gray-300 */
+  cursor: not-allowed;
+}
+
+.loader {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #e5e7eb; 
+  border-top-color: #6366f1; 
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .postButton {
+    align-self: flex-end;
+  }
+}
