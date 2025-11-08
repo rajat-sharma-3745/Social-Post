@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import login from "../../assets/login.png";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useAppContext } from "../../context/AppContext";
 import { toast } from "sonner";
 import styles from './Login.module.css';
+import { FaImage } from "react-icons/fa";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
+  const imageRef = useRef(null);
   const {setUser} = useAppContext();
 
   const [data, setData] = useState({
@@ -16,6 +18,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [image,setImage] = useState(null);
 
   const changeHandler = (e) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -32,11 +35,25 @@ const Login = () => {
         return;
       }
       setLoading(true);
+      const formData = new FormData();
+      formData.append('name',data.name)
+      formData.append('email',data.email)
+      formData.append('password',data.password)
+      formData.append('profilePic',image)
       const endpoint = isLogin ? API_PATHS.USER.LOGIN : API_PATHS.USER.SIGNUP;
       const payload = isLogin
         ? { email: data.email, password: data.password }
-        : { name: data.name, email: data.email, password: data.password };
-      const res = await axiosInstance.post(endpoint, payload);
+        : formData
+        const config = isLogin ? {
+          headers:{
+            "Content-Type":'application/json'
+          }
+        }:{
+          headers:{
+            "Content-Type":'multipart/form-data'
+          }
+        }
+      const res = await axiosInstance.post(endpoint, payload,config);
       localStorage.setItem('user',JSON.stringify(res?.data?.user))
       setUser(res?.data?.user)
       toast.success(res?.data?.message)
@@ -49,6 +66,8 @@ const Login = () => {
         email: "",
         password: "",
       });
+
+      setImage(null)
     }
   };
 
@@ -70,6 +89,7 @@ const Login = () => {
           </p>
 
           {!isLogin && (
+            <>
             <div className={styles.inputWrapper}>
               <svg
                 width="16"
@@ -95,6 +115,12 @@ const Login = () => {
                 required
               />
             </div>
+            <div onClick={()=>imageRef.current.click()} className={styles.inputWrapper} style={{cursor:'pointer'}}>
+              <FaImage style={{color:"rgba(107, 114, 128, 0.8)",fontSize:'14px'}}/>
+              <input ref={imageRef} onChange={({target})=>setImage(target.files[0])} type="file" style={{display:'none'}} />
+              <span style={{color:"rgba(107, 114, 128, 0.8)",fontSize:'13px'}}>{image?`${image?.name}`:"Upload image"}</span>
+            </div>
+            </>
           )}
 
           <div className={styles.inputWrapper}>
@@ -153,7 +179,7 @@ const Login = () => {
                 ? "Logging in..."
                 : "Login"
               : loading
-              ? "Signing up..."
+              ? <div className={styles.loader}></div>
               : "Sign Up"}
           </button>
 

@@ -29,7 +29,7 @@ const Comment = ({ comment }) => {
   return (
     <div style={containerStyle}>
       <div style={innerContainerStyle}>
-        <Avatar size="md" src={comment?.author?.profilePicture} />
+        <Avatar size="md" src={comment?.user?.profilePic} />
         <div>
         <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
         <h1 style={usernameStyle}>

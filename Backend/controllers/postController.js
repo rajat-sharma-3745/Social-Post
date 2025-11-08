@@ -4,10 +4,16 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadFileToCloudinary } from "../utils/cloudinary.js";
 
 export const getAllPosts = asyncHandler(async (req, res, next) => {
-    const posts = await Post.find().populate('author', 'name profilePic').populate("comments.user", "name profilePic").sort({ createdAt: -1 });
+    const { page = 1 } = req.query;
+    const limit = 5;
+    const skip = (page - 1) * limit
+    const posts = await Post.find().populate('author','name profilePic').populate("comments.user", "name profilePic").sort({ createdAt: -1 }).skip(skip).limit(limit);
+    const totalPosts = await Post.countDocuments();
     res.status(200).json({
         message: "Posts fetched successfully",
-        count: posts.length,
+        totalPosts,
+        currentPage: page,
+        totalPages: Math.ceil(totalPosts / limit),
         posts,
     });
 })
@@ -26,10 +32,11 @@ export const createPost = asyncHandler(async (req, res, next) => {
         text,
         image,
     });
+    const populatedPost = await post.populate('author', 'name profilePic');
 
     res.status(201).json({
         message: "Post created successfully",
-        post,
+        post:populatedPost,
     });
 
 })
@@ -50,7 +57,7 @@ export const likePost = asyncHandler(async (req, res, next) => {
     }
     await post.save();
     res.status(200).json({
-        success:true,
+        success: true,
         message: alreadyLiked ? "Post unliked" : "Post liked",
         totalLikes: post.likes.length,
         post,
@@ -75,7 +82,7 @@ export const commentOnPost = asyncHandler(async (req, res, next) => {
         .populate("comments.user", "name profilePic");
 
     res.status(201).json({
-        success:true,
+        success: true,
         message: "Comment added successfully",
         commentsCount: updatedPost.comments.length,
         comments: updatedPost?.comments,

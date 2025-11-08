@@ -7,7 +7,7 @@ export const API_PATHS = {
         SIGNUP: '/users/signup',
     },
     POST: {
-        GET: '/posts',
+        GET:(page) =>`/posts?page=${page}`,
         CREATE:'/posts',
         LIKE:(id)=>`/posts/${id}/like`,
         COMMENT:(id)=>`/posts/${id}/comment`

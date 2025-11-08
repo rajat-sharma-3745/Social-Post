@@ -23,16 +23,21 @@ const Post = ({ post }) => {
   const onClose = () => setCommentOpen(false);
 
   const likeOrDislikeHandler = async () => {
+    const prevLiked = liked;
+    const prevCount = likeCount;
+
+    setLiked(!prevLiked);
+    setLikeCount(prevLiked ? prevCount - 1 : prevCount + 1);
     try {
       const { data } = await axiosInstance.patch(API_PATHS.POST.LIKE(post._id));
-      if (data?.success) {
-        const updatedLikesCount = liked ? likeCount - 1 : likeCount + 1;
-        setLikeCount(updatedLikesCount);
-        setLiked((p) => !p);
-        toast.success(data?.message);
+      if (!data?.success) {
+        setLiked(prevLiked);
+        setLikeCount(prevCount);
+        toast.error(data?.message || "Failed to update like");
       }
     } catch (error) {
-      console.log(error);
+      setLiked(prevLiked);
+      setLikeCount(prevCount);
       toast.error(error?.response?.data?.message || "Something went wrong");
     }
   };
@@ -102,7 +107,7 @@ const Post = ({ post }) => {
   return (
     <div className={styles.card}>
       <div className={styles.header}>
-        <Avatar />
+        <Avatar src={post?.author?.profilePic} />
         <div className={styles.userInfo}>
           <h4 className={styles.name}>{post?.author?.name}</h4>
           <p className={styles.date}>{formatTimestamp(post?.createdAt)}</p>
@@ -170,7 +175,7 @@ const Post = ({ post }) => {
             {comments.length === 0 ? (
               <p className={styles.noComments}>No comments yet.</p>
             ) : (
-              comments.map((c) => <Comment comment={c} />)
+              comments.map((c) => <Comment key={c?._id} comment={c} />)
             )}
           </div>
 
@@ -183,16 +188,10 @@ const Post = ({ post }) => {
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
             />
-            {loading ? (
-              <div className={styles.loader}></div>
-            ) : (
-              <button
-                onClick={sendCommentHandler}
-                className={styles.postButton}
-              >
-                Post
-              </button>
-            )}
+
+            <button onClick={sendCommentHandler} className={styles.postButton}>
+              {loading ? <div className={styles.loader}></div> :'Post'}
+            </button>
           </div>
         </div>
       </Modal>

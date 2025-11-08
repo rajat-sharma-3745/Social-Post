@@ -69,6 +69,8 @@ const CreatePost = ({ setPosts }) => {
             alignItems: "center",
             justifyContent: "center",
             position: "relative",
+            borderTop:"1px solid #e5e7eb",
+            paddingTop:"10px"
           }}
         >
           <button style={buttonStyle} onClick={() => setImagePreview("")}>
@@ -77,7 +79,7 @@ const CreatePost = ({ setPosts }) => {
           <img
             src={imagePreview}
             alt="preview_img"
-            style={{ objectFit: "cover", width: "100%" }}
+            style={{ objectFit: "contain", width: "100%",height:'300px' }}
           />
         </div>
       )}
@@ -133,6 +135,6 @@ const buttonStyle = {
   fontWeight: "bold",
   fontSize: "12px",
   position: "absolute",
-  top: 10,
-  right: "8px",
+  top: 5,
+  right: "6px",
 };

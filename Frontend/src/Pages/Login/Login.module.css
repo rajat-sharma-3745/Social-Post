@@ -115,3 +115,18 @@
 .switchLink:hover {
   text-decoration: underline;
 }
+.loader {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #e5e7eb; 
+  border-top-color: #6366f1; 
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
