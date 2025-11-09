@@ -48,7 +48,6 @@
   height: 2.75rem; 
   cursor: pointer;
   transition: all 0.2s ease;
-  display: none; 
 }
 
 .logoutButton:hover {
@@ -59,8 +58,10 @@
   transform: scale(0.95);
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .logoutButton {
-    display: inline-block;
+    width: 5rem;
+    /* height: 1.25rem; */
+    padding: 10px;
   }
 }

@@ -34,7 +34,7 @@ const Home = () => {
   }, [page]);
   useInfiniteScrollBottom(page, setPage, totalPages);
   return (
-    <div>
+    <div style={{padding:'10px'}}>
       <Navbar />
       <CreatePost setPosts={setPosts} />
       <Feed containerRef={containerRef} posts={posts} />
