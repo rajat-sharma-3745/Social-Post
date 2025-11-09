@@ -4,14 +4,23 @@ const Modal = ({ open, onClose, children }) => {
   const modalRef = useRef(null);
 
   useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
         onClose();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    return () =>{ document.removeEventListener("mousedown", handleClickOutside)
+      document.body.style.overflow = "auto";
+    }
+  }, [open]);
+
+ 
 
   if (!open) return null;
 

@@ -7,15 +7,18 @@ import { API_PATHS } from "../../utils/apiPaths";
 import { toast } from "sonner";
 import Navbar from "../../components/Navbar/Navbar";
 import useInfiniteScrollBottom from "../../hooks/useInfiniteScrollBottom";
+import Spinner from "../../components/Spinner";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const containerRef = useRef(null);
+  const [loading,setLoading] = useState(false)
   useEffect(() => {
     async function getPosts() {
       try {
+        setLoading(true);
         const { data } = await axiosInstance.get(API_PATHS.POST.GET(page));
         setPosts((prev) => {
           // Remove duplicates before appending
@@ -29,6 +32,9 @@ const Home = () => {
       } catch (error) {
         console.log(error?.response?.data);
       }
+      finally{
+        setLoading(false)
+      }
     }
     getPosts();
   }, [page]);
@@ -37,7 +43,7 @@ const Home = () => {
     <div style={{padding:'10px'}}>
       <Navbar />
       <CreatePost setPosts={setPosts} />
-      <Feed containerRef={containerRef} posts={posts} />
+      {loading?<Spinner/>:<Feed containerRef={containerRef} posts={posts} />}
     </div>
   );
 };
