@@ -30,7 +30,7 @@ const Home = () => {
         });
         setTotalPages(data?.totalPages);
       } catch (error) {
-        console.log(error?.response?.data);
+        toast.error(error?.response?.data?.message||"Something went wrong");
       }
       finally{
         setLoading(false)
