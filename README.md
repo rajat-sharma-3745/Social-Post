@@ -36,8 +36,8 @@ Pagination has been implemented in the **Post Controller**.
 ## 🛠️ Installation and Setup
 ### 1. Clone the repository
 ```bash 
-git clone https://github.com/your-username/rajat-sharma-3745-social-post.git
-cd rajat-sharma-3745-social-post
+git clone https://github.com/rajat-sharma-3745/social-post.git
+cd social-post
 ```
 ### 2. Backend Setup
 ```bash 
